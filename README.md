@@ -2,7 +2,7 @@
 
 **A SPECIFICATION FOR BUILDING FORMS IN JSON**
 
-🔖 [View the Specification](/specification.md)
+🔖 [View the Specification](https://github.com/DeloitteDigitalAPAC/json-forms-specification/blob/master/SPECIFICATION.md)
 
 ---
 

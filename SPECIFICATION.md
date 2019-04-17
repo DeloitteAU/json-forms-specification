@@ -1,38 +1,52 @@
 # JSON Forms Specification v1.0
 
 - [Terminology](#terminology)
+  - [Field](#field)
+  - [Field type](#field-type)
+  - [Form rule](#form-rule)
+- [Nested fields and Sections](#nested-fields-and-sections)
+- [JSON Structure](#json-structure)
+  - [Top level structure](#top-level-structure)
+  - [Fields](#fields)
+  - [TextNodes](#textnodes)
+  - [Form Rules](#form-rules)
+  - [Action types](#action-types)
+    - [Conditions](#conditions)
+    - [Validators](#validators)
+    - [Data format](#data-format)
+- [Conventions](#conventions)
 
 ## Terminology
 
-- **Field**
+### Field
 
-  In this document a field refers to any item that will be appear in your form.
+In this document a field refers to any item that will be appear in your form.
 
-  A field in this context can include (but is not limited to):
-      
-  - Form inputs (text, select, checkbox)
-  - Custom form widgets such as an address typeahead or a date picker.
-  - Structural form elements like sections/fieldsets.
-  - Layout elements such as a bootstrap style row or column.
-  - Rich text or html blocks.
+A field in this context can include (but is not limited to):
+    
+- Form inputs (text, select, checkbox)
+- Custom form widgets such as an address typeahead or a date picker.
+- Structural form elements like sections/fieldsets.
+- Layout elements such as a bootstrap style row or column.
+- Rich text or html blocks.
 
-  The type of field is driven by the `type` property of the field. See the documentation for [fields](#Field).
+### Field type
 
-- **Field type**
+The type of field is driven by the `type` property of the field. See the documentation for [fields](#field).
 
-- **Form rule**
+### Form rule
 
-  In this document a form rule refers to a rule applied to a property of a field when a condition is met.  
+In this document a form rule refers to a rule applied to a property of a field when a condition is met.  
 
-  An example of a form rule is a 'show when' rule, which will conditionally show/hide a field.
+An example of a form rule is a 'show when' rule, which will conditionally show/hide a field.
 
-  See the documentation for [form rules](#Form_Rules).
+See the documentation for [form rules](#form-rules).
 
-  A form rule is **NOT** a validation rule. See [validators](#Validators) for validation rules.
+A form rule is **NOT** a validation rule. See [validators](#validators) for validation rules.
 
-## Addressing nested fields
+## Nested fields and Sections
 
-There are many places where you will need to reference a field within the form as part of a [form rule](#Form_rules) or a [validator](#Validators).
+There are many places where you will need to reference a field within the form as part of a [form rule](#form-rules) or a [validator](#validators).
 
 The syntax for referencing a field is tied to it's path in the nested field structure.
 
@@ -76,7 +90,7 @@ Nested fields can be referenced by their path in the nested tree, each id sepera
 }
 ```
 
-This follows the same convention as defined in the section on [data format](#data_format).
+This follows the same convention as defined in the section on [data format](#data-format).
 
 ## JSON Structure
 
@@ -86,11 +100,11 @@ A form **MUST** have these top level members:
 
 - `version`: an integer representing the version number of the JSON forms spec
 - `id`: a string used to identify the form. **MUST** be unique among other forms.
-- `fields`: an array of [field](#Field) objects, representing the fields that should be rendered by the form builder.
+- `fields`: an array of [field](#field) objects, representing the fields that should be rendered by the form builder.
 
 A form **MAY** have these top level members:
 
-- `initialValues`: an object containing the initial values of the form, see the section on [values and error format](#data_format) for the expected structure of this object.
+- `initialValues`: an object containing the initial values of the form, see the section on [values and error format](#data-format) for the expected structure of this object.
 - `data`: an object used for form level configuration. This would used differently on a per project basis.
 
   Examples of form level configuration might include:
@@ -101,17 +115,17 @@ A form **MAY** have these top level members:
 
 A field **MUST** have these properties:
 
-- `id`: a string used to identify the field. **MUST** be unique among it's siblings. See the section on [Values and error format](#data_format) for how this id is used.
+- `id`: a string used to identify the field. **MUST** be unique among it's siblings. See the section on [Values and error format](#data-format) for how this id is used.
 - `type`: a string representing the type of field this is. The type will determine both the rendering of the field and the options it can take.
 
 A field **MAY** have these properties:
 
-- `rules`: an array of [form rule](#Form_rules) objects.
+- `rules`: an array of [form rule](#form-rules) objects.
 - `required`: a boolean value determining whether this field needs to be completed to submit the form. Defaults to `false`.
-- `requiredMessage`: either a string or a [text node](#TextNodes) object used to customise the required field error message. If omitted this will default to a standard message.
-- `validators`: an array of [field validator](#Validators) objects.
-- `fields`: an array of nested [field](#Fields) objects. This would used differently for different field types, but where possible you should use [these existing conventions](#Conventions).
-- `data`: an object used for field level configuration. This would used differently for different field types, but where possible you should use [these existing conventions](#Conventions).
+- `requiredMessage`: either a string or a [text node](#textnodes) object used to customise the required field error message. If omitted this will default to a standard message.
+- `validators`: an array of [field validator](#validators) objects.
+- `fields`: an array of nested [field](#fields) objects. This would used differently for different field types, but where possible you should use [these existing conventions](#conventions).
+- `data`: an object used for field level configuration. This would used differently for different field types, but where possible you should use [these existing conventions](#conventions).
 
 #### Examples
 
@@ -195,7 +209,7 @@ Use rules when you need to add conditionally logic to a field based on the value
 A rule **MUST** have these properties:
 
 - `action`: a string used to determines which behaviour to use, see the table below for defined actions.
-- `when`: a [condition](#Conditions) object which describes when the action should apply.
+- `when`: a [condition](#conditions) object which describes when the action should apply.
 
 #### Action types
 
@@ -280,7 +294,7 @@ A Validator MUST have these properties:
 
 A Validator MAY have these properties:
 
-- `message`: either a string or a [text node](#TextNodes) object used to customise the error message displayed to the user.
+- `message`: either a string or a [text node](#textnodes) object used to customise the error message displayed to the user.
 - `options`: an object used to configure the validation rule. This would vary between each type of validator.
 
 #### Examples
@@ -349,7 +363,7 @@ The values returned on submit of the form would look like this:
 
 This format is currently used in the following scenarios:
 
-- Setting initial form values (See [Top level structure](#Top_level_structure))
+- Setting initial form values (See [Top level structure](#top-level-structure))
 - Once the form has been submitted by the user, the form values will be available in this format to send to API.
 - Errors from an API can be sent back to the form buider in this format, with the error message as the value.
 
